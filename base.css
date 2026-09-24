@@ -1,0 +1,49 @@
+body {
+    user-select: none;
+    font-size: 16px;
+}
+
+code, textarea {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    user-select: all;
+}
+
+textarea {
+    margin-top: 4px;
+    min-width: 36em;
+    max-width: 50em;
+    min-height: 16em;
+    max-height: 24em;
+}
+
+code {
+    font-size: 87.5%;
+    color: #e83e8c;
+    word-wrap: break-word;
+    white-space: pre;
+}
+
+code {
+    margin: 0 0.2rem;
+}
+
+p {
+    max-width: 56em;
+}
+
+button, input[type=button] {
+    cursor: pointer;
+}
+
+a {
+    color: #539bf5;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul li {
+    line-height: 20px;
+}

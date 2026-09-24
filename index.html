@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-cmn">
+<head>
+    <meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=b72838f4-e603-42a1-b8de-2ca76f96a279
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="favicon.ico">
+    <title>RAR Keygen</title>
+    <script src="keygen.js"></script>
+    <link rel="stylesheet" href="base.css">
+</head>
+<body>
+<h3>RAR 注册 key 文件生成器（<code>rarreg.key</code>）</h3>
+<div>
+    <label>
+        用户名：<input id="username" value="Microsoft Corporation" maxlength="50">
+    </label>
+    <label>
+        授权类型：<input id="licenseType" value="Unlimited Perpetual License" maxlength="50">
+    </label>
+    <input type="button" id="genBtn" value="生成">
+</div>
+<textarea id="output" readonly rows="14"></textarea>
+<br>
+<input type="button" id="saveBtn" value="保存" hidden>
+<br>
+<p>
+    如果您使用 WinRAR，您应该把注册 key 文件（<code>rarreg.key</code>）复制到 WinRAR 文件夹或 <code>%APPDATA%\WinRAR</code> 文件夹中。
+    默认的 WinRAR 文件夹是“<code>C:\Program Files\WinRAR</code>”，但是用户能在安装 WinRAR 时修改它。
+    您也可以拖放 <code>rarreg.key</code> 文件到 WinRAR 窗口来注册。
+</p>
+
+<hr>
+
+<div style="padding-bottom: 1.2em;">
+    <h3>WinRAR 下载地址</h3>
+    <p>商业版：</p>
+    <ul id="wrrUl"></ul>
+    <p>零售版：</p>
+    <ul id="rrlbUl"></ul>
+    <p>个人版（含广告）：</p>
+    <ul id="homeUl"></ul>
+</div>
+
+<div>
+    <p>一个是rrlb、一个是wrr，rrlb是rarlab（官网：www.rarlab.com）的缩写，wrr是win-rar（RARLAB产品的官方发行商：www.win-rar.com）的缩写</p>
+    <p>二者区别只是数字签名时间稍有不同，功能上完全相同，都是官方版本</p>
+</div>
+</body>
+<script>
+  const mallocByteBuffer = len => {
+    const ptr = Module._malloc(len)
+    return new Uint8Array(Module.HEAPU8.buffer, ptr, len)
+  }
+
+  const keygen = (username, licenseType, outputPointer) => Module.ccall('_Z6keygenPKcS0_Pc', null, ['string', 'string', 'number'], [username, licenseType, outputPointer]);
+  const strToDataUrl = (str) => {
+    const te = new TextEncoder();
+    const b64Str = btoa(String.fromCharCode(...te.encode(str)));
+    return 'data:text/plain;charset=utf-8;base64,' + b64Str;
+  }
+  const generateKey = function () {
+    document.getElementById('output').textContent = '';
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.onclick = null;
+    saveBtn.hidden = true;
+    const username = document.getElementById('username').value;
+    const licenseType = document.getElementById('licenseType').value;
+
+    const outBuffer = mallocByteBuffer(600);
+    keygen(username, licenseType, outBuffer.byteOffset);
+    const output = Array.from(outBuffer).map(v => String.fromCharCode(v)).join('').replace(/\0.*/g, '');
+    console.log(output)
+
+    document.getElementById('output').textContent = output;
+    saveBtn.hidden = false;
+    saveBtn.onclick = () => {
+      console.log('保存文件：', output);
+      const aTag = document.createElement('a');
+      aTag.download = 'rarreg.key';
+      aTag.target = '_blank';
+      aTag.href = strToDataUrl(output);
+      aTag.click();
+    };
+  }
+
+  document.getElementById('genBtn').onclick = generateKey;
+</script>
+
+<script>
+  ;(function () {
+    const wrrList = [
+      {label: '6.24 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20231013/wrr/winrar-x64-624sc.exe'},
+      {label: '6.24 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20231013/wrr/winrar-x32-624sc.exe'},
+
+      {label: '6.23 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230808/wrr/winrar-x64-623sc.exe'},
+      {label: '6.23 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230808/wrr/winrar-x32-623sc.exe'},
+
+      {label: '6.22 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230607/wrr/winrar-x64-622sc.exe'},
+      {label: '6.22 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230607/wrr/winrar-x32-622sc.exe'},
+
+      {label: '6.21 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230223/wrr/winrar-x64-621sc.exe'},
+      {label: '6.21 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230223/wrr/winrar-x32-621sc.exe'},
+
+      {label: '5.91 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20200708/wrr/winrar-x64-591sc.exe'},
+      {label: '5.91 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20200708/wrr/wrar591sc.exe'},
+    ];
+    const rrlbList = [
+      {label: '6.24 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20231013/rrlb/winrar-x64-624sc.exe'},
+      {label: '6.24 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20231013/rrlb/winrar-x32-624sc.exe'},
+
+      {label: '6.23 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230808/rrlb/winrar-x64-623sc.exe'},
+      {label: '6.23 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230808/rrlb/winrar-x32-623sc.exe'},
+
+      {label: '6.22 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230607/rrlb/winrar-x64-622sc.exe'},
+      {label: '6.22 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230607/rrlb/winrar-x32-622sc.exe'},
+
+      {label: '6.21 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230223/rrlb/winrar-x64-621sc.exe'},
+      {label: '6.21 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20230223/rrlb/winrar-x32-621sc.exe'},
+
+      {label: '5.91 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20200708/rrlb/winrar-x64-591sc.exe'},
+      {label: '5.91 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/sc/sc20200708/rrlb/wrar591sc.exe'},
+    ];
+    const homeList = [
+      {label: '6.24 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-624sc.exe'},
+      {label: '6.24 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x32-624sc.exe'},
+
+      {label: '6.23 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-623sc.exe'},
+      {label: '6.23 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x32-623sc.exe'},
+
+      {label: '6.22 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-622sc.exe'},
+      {label: '6.22 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x32-622sc.exe'},
+
+      {label: '6.21 x64', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x64-621sc.exe'},
+      {label: '6.21 x32', link: 'https://www.win-rar.com/fileadmin/winrar-versions/winrar/winrar-x32-621sc.exe'},
+    ];
+
+    function renderList(pel, list) {
+      if (!pel || !list) return;
+      const fragment = document.createDocumentFragment();
+      list.forEach(i => {
+        if (!i.link) return;
+        const li = document.createElement('li');
+        li.innerHTML = `<code>${i.label}</code>: <a target="_blank" rel="noopener" href="${i.link}">${i.link}</a>`;
+        fragment.appendChild(li);
+      })
+      pel.appendChild(fragment);
+    }
+    renderList(document.getElementById('wrrUl'), wrrList);
+    renderList(document.getElementById('rrlbUl'), rrlbList);
+    renderList(document.getElementById('homeUl'), homeList);
+  })();
+</script>
+</html>
